@@ -7,7 +7,7 @@
 #	python simple_request.py
 
 # import the necessary packages
-from keras.applications import ResNet50
+from keras.applications import resnet
 from keras.preprocessing.image import img_to_array
 from keras.applications import imagenet_utils
 from PIL import Image
@@ -24,7 +24,7 @@ def load_model():
 	# pre-trained on ImageNet and provided by Keras, but you can
 	# substitute in your own networks just as easily)
 	global model
-	model = ResNet50(weights="imagenet")
+	model = resnet.ResNet50(weights="imagenet")
 
 def prepare_image(image, target):
 	# if the image mode is not RGB, convert it
