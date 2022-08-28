@@ -18,6 +18,7 @@ import io
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
 model = None
+print(__name__)
 
 def load_model():
 	# load the pre-trained Keras model (here we are using a model
@@ -42,11 +43,13 @@ def prepare_image(image, target):
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    
 	# initialize the data dictionary that will be returned from the
 	# view
 	data = {"success": False}
-
-	# ensure an image was properly uploaded to our endpoint
+	model = resnet.ResNet50(weights="imagenet")
+	
+    # ensure an image was properly uploaded to our endpoint
 	if flask.request.method == "POST":
 		if flask.request.files.get("image"):
 			# read the image in PIL format
