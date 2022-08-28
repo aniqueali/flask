@@ -25,4 +25,4 @@ Werkzeug==2.2.2
 zope.event==4.5.0
 zope.interface==5.4.0
 tensorflow-cpu==2.9.1
-protobuf==3.20.1
+protobuf==3.20
