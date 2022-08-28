@@ -7,9 +7,11 @@
 #	python simple_request.py
 
 # import the necessary packages
+from platform import python_version
 from keras.applications import resnet
-from keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import image_utils
 from keras.applications import imagenet_utils
+import keras
 from PIL import Image
 import numpy as np
 import flask
@@ -18,14 +20,14 @@ import io
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
 model = None
-print(__name__)
+print("Using python version: " + python_version())
 
 def load_model():
 	# load the pre-trained Keras model (here we are using a model
 	# pre-trained on ImageNet and provided by Keras, but you can
 	# substitute in your own networks just as easily)
 	global model
-	model = resnet.ResNet50(weights="imagenet")
+	model = keras.models.load_model("./full_retina_model.h5")
 
 def prepare_image(image, target):
 	# if the image mode is not RGB, convert it
@@ -34,7 +36,7 @@ def prepare_image(image, target):
 
 	# resize the input image and preprocess it
 	image = image.resize(target)
-	image = img_to_array(image)
+	image = image_utils.img_to_array(image)
 	image = np.expand_dims(image, axis=0)
 	image = imagenet_utils.preprocess_input(image)
 
@@ -47,7 +49,6 @@ def predict():
 	# initialize the data dictionary that will be returned from the
 	# view
 	data = {"success": False}
-	model = resnet.ResNet50(weights="imagenet")
 	
     # ensure an image was properly uploaded to our endpoint
 	if flask.request.method == "POST":
@@ -61,6 +62,7 @@ def predict():
 
 			# classify the input image and then initialize the list
 			# of predictions to return to the client
+			load_model()
 			preds = model.predict(image)
 			results = imagenet_utils.decode_predictions(preds)
 			data["predictions"] = []
