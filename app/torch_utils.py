@@ -4,7 +4,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms 
 from PIL import Image
 
-model = torch.load('model.pt',map_location=torch.device('cpu'))
+#model = torch.load('model.pt',map_location=torch.device('cpu'))
 
 def transform_image(image_bytes):
     transform = transforms.Compose([transforms.Resize([512,512]),
